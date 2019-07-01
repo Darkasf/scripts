@@ -1,0 +1,18 @@
+#!/bin/bash
+
+current=$(xrandr --verbose | grep "Brightness" | head -n 1 | grep -o '[0-9].*')
+echo "$current *100"|bc | cut -d "." -f 1
+case $BLOCK_BUTTON in
+    4) action=$(echo "$current+0.1" | bc);;
+    5) action=$(echo "$current-0.1" | bc);;
+esac
+
+[ -z "$action"  ] && exit 1
+
+outputs=($(xrandr --query | grep " connected" | cut -d " " -f 1))
+n=$(xrandr --query | grep " connected" | wc -l)
+
+for (( i=0; i<$n; i++ ))
+do
+    xrandr --output "${outputs[$i]}" --brightness $action
+done
