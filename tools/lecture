@@ -1,0 +1,7 @@
+#!/bin/sh
+
+className=`ls ~/Documents/ | dmenu`
+
+[ -z $className] && exit
+
+i3-msg "workspace 3; exec zathura $HOME/Documents/$className/Notes.pdf&; exec $TERMINAL -e vim $HOME/Documents/$className/Notes.tex&"

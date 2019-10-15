@@ -1,0 +1,3 @@
+#!/bin/sh
+
+pacman -Qqet | dmenu -l 30 | sudo -A pacman -R -
