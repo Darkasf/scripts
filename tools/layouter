@@ -1,4 +1,0 @@
-#!/bin/sh
-
-
-i3-msg "split toggle; workspace 10; append_layout $HOME/.workspace-10.json; workspace 1"
