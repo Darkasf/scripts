@@ -1,0 +1,29 @@
+#!/bin/sh
+
+clear
+
+unset LEAK_CHECK OUTPUT_FILE
+_NAME=`basename $PWD`
+
+while getopts 'lo:' c
+do
+  case $c in
+    l) LEAK_CHECK=1 ;;
+    o) OUTPUT_FILE=$OPTARG ;;
+  esac
+done
+
+if [ -z $OUTPUT_FILE ]; then
+  g++ *.?pp -g -o "${_NAME}"
+  if [ -z $LEAK_CHECK ]; then
+    valgrind "./${_NAME}"
+  else
+    valgrind --leak-check=full --show-leak-kinds=all "./${_NAME}"
+  fi
+elif [ -z $LEAK_CHECK ]; then
+  g++ *.?pp -g -o "${OUTPUT_FILE}"
+  valgrind "./${OUTPUT_FILE}"
+else
+  g++ *.?pp -g -o "${OUTPUT_FILE}"
+  valgrind --leak-check=full --show-leak-kinds=all "./${OUTPUT_FILE}"
+fi

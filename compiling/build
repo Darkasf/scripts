@@ -1,0 +1,26 @@
+#!/bin/sh
+
+unset LEAK_CHECK OUTPUT_FILE
+_NAME=`basename $PWD`
+gcc *.? -g -o "${_NAME}"
+
+while getopts 'lo:' c
+do
+  case $c in
+    l) LEAK_CHECK=1 ;;
+    o) OUTPUT_FILE=$OPTARG ;;
+  esac
+done
+
+if [ -z $OUTPUT_FILE ]; then
+  if [ -z $LEAK_CHECK ]; then
+    valgrind "./${_NAME}"
+  else
+    valgrind --leak-check=full --show-leak-kinds=all "./${_NAME}"
+  fi
+elif [ -z $LEAK_CHECK ]; then
+  gcc *.? -g -o "${OUTPUT_FILE}"
+  valgrind "./${OUTPUT_FILE}"
+else
+  valgrind --leak-check=full --show-leak-kinds=all "./${OUTPUT_FILE}"
+fi
