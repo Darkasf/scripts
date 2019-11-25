@@ -1,9 +1,10 @@
-#!/bin/bash
+#!/bin/sh
 
-i3lockr --blur 25
-for (( i = 0; i < 30; i++ ))
+sflock -c "epsteindidntkillhimself"
+i=30
+while [ $i > 0 ]
 do
+    pgrep sflock > /dev/null || break
     sleep 60
-    pgrep i3lock > /dev/null || exit
 done
 systemctl suspend
