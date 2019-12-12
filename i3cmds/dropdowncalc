@@ -1,2 +1,0 @@
-#!/bin/sh
-ifinstalled bc && bc -lq
