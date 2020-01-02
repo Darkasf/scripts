@@ -1,19 +1,14 @@
 #!/bin/sh
 
 if [ ! -z $1 ];then
-    dim=$1
+    lock=$1
 else
-    dim=1200
+    lock=600
 fi
 if [ ! -z $2 ];then
-    lock=$2
+    end=$2
 else
-    lock=60
-fi
-if [ ! -z $3 ];then
-    end=$3
-else
-    end=1800
+    end=1200
 fi
 # Only exported variables can be used within the timer's command.
 export PRIMARY_DISPLAY="$(xrandr | awk '/ primary/{print $1}')"
@@ -25,14 +20,10 @@ xidlehook \
   `# Don't lock when there's audio playing` \
   --not-when-audio \
   `# Dim the screen after 10 minutes, undim if user becomes active` \
-  --timer normal $dim\
-    'xrandr --output "$PRIMARY_DISPLAY" --brightness .1' \
-    'xrandr --output "$PRIMARY_DISPLAY" --brightness 1' \
-  `# Undim & lock after 60 more seconds` \
-  --timer normal $lock \
-    'xrandr --output "$PRIMARY_DISPLAY" --brightness 1; sflock -c "fsck"; xset dpms force suspend' \
+  --timer $lock \
+    'slock' \
     '' \
   `# Finally, suspend 30 min after it locks` \
-  --timer primary $end \
+  --timer $end \
     'systemctl suspend' \
     ''

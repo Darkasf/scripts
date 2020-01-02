@@ -1,0 +1,2 @@
+#!/bin/sh
+(((pgrep "openvpn .*pvpn" -f > /dev/null) && echo "connected") || echo "disconnected")
