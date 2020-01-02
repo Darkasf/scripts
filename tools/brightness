@@ -1,0 +1,11 @@
+#!/bin/sh
+
+max=`cat /sys/class/backlight/amdgpu_bl0/max_brightness`
+current=`cat /sys/class/backlight/amdgpu_bl0/brightness`
+
+case $1 in
+    "dec")change=`echo "$current - ( $max / 20 )" | bc`;;
+    "inc")change=`echo "$current + ( $max / 20 )" | bc`;;
+esac
+
+echo $change | sudo tee /sys/class/backlight/amdgpu_bl0/brightness
