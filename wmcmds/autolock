@@ -3,7 +3,7 @@
 if [ ! -z $1 ];then
     lock=$1
 else
-    lock=600
+    lock=1200
 fi
 if [ ! -z $2 ];then
     end=$2
