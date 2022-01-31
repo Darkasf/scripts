@@ -1,11 +1,15 @@
 #!/bin/sh
 
-max=`cat /sys/class/backlight/amdgpu_bl0/max_brightness`
 current=`cat /sys/class/backlight/amdgpu_bl0/brightness`
 
 case $1 in
-    "dec")change=`echo "$current - ( $max / 20 )" | bc`;;
-    "inc")change=`echo "$current + ( $max / 20 )" | bc`;;
+    "dec")change=`echo "$current - 15" | bc`;;
+    "inc")change=`echo "$current + 15" | bc`;;
 esac
 
-echo $change | sudo tee /sys/class/backlight/amdgpu_bl0/brightness
+if [ $change -lt 0 ]
+then
+    echo "0" | sudo tee /sys/class/backlight/amdgpu_bl0/brightness
+else
+    echo $change | sudo tee /sys/class/backlight/amdgpu_bl0/brightness
+fi

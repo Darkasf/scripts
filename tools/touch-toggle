@@ -1,0 +1,8 @@
+#!/bin/bash
+
+DEVID=$(xinput | grep "Synaptics TouchPad" | grep -o '[0-9][0-9]')
+CRTSTATE=$(xinput list-props $DEVID|grep "Device Enabled"| tail -c 2)
+NEWSTATE=$(expr 1 - $CRTSTATE)
+
+echo "Toggle touchpad to new state: $NEWSTATE"
+xinput set-int-prop $DEVID "Device Enabled" 8 $NEWSTATE

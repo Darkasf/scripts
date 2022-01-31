@@ -1,0 +1,22 @@
+#!/bin/bash
+
+curr_layout=$(setxkbmap -print | awk -F"+" '/xkb_symbols/ {print $2}')
+
+layouts=("us" "hu(102_qwerty_comma_nodead)")
+
+
+
+for ((i = 0 ; i < ${#layouts[@]} ; i++))
+do
+    if [ "${layouts[$i]}" == "$curr_layout" ]
+    then
+        if [ "$(($i + 1))" == "${#layouts[@]}" ]
+        then
+            notify-send "Keyboard: ${layouts[0]}"
+            setxkbmap ${layouts[0]}
+            exit
+        fi
+        notify-send "Keyboard: ${layouts[$i +1]}"
+        setxkbmap ${layouts[$i + 1]}
+    fi
+done
